@@ -14,10 +14,8 @@ class imu:
         self.acc_pitch = 0.0
         self.gyro_pitch = 0.0
 
-        self.acc_yaw = 0.0
-        self.gyro_yaw = 0.0
-
     def calibrate(self):
+        print("Calibrating...")
         gyro_offset_x = 0.0
         gyro_offset_y = 0.0
         gyro_offset_z = 0.0
@@ -39,10 +37,6 @@ class imu:
     def calculate(self):
         data = self.esp32.readline().decode('ascii').strip().split(',')
 
-        current_time = time.time()
-        delta_time = current_time - self.last_time
-        self.last_time = current_time
-
         accel_x = float(data[0])
         accel_y = float(data[1])
         accel_z = float(data[2])
@@ -50,12 +44,16 @@ class imu:
         gyro_y = float(data[4])
         gyro_z = float(data[5])
 
-        gyro_x = (gyro_x - self.gyro_offset_x) / 65.5
-        gyro_y = (gyro_y - self.gyro_offset_y) / 65.5
-        gyro_z = (gyro_z - self.gyro_offset_z) / 65.5
+        gyro_x = (gyro_x - self.gyro_offset_x) / 131
+        gyro_y = (gyro_y - self.gyro_offset_y) / 131
+        gyro_z = (gyro_z - self.gyro_offset_z) / 131
+
+        current_time = time.time()
+        delta_time = current_time - self.last_time
+        self.last_time = current_time
 
         self.acc_pitch = numpy.atan2(accel_y, accel_z) * 180 / numpy.pi
-        self.gyro_pitch = gyro_y * delta_time
+        self.gyro_pitch = gyro_x * delta_time
 
-        self.acc_roll = numpy.atan2(accel_x, accel_z) * 180 / numpy.pi
-        self.gyro_roll = gyro_x * delta_time
+        self.acc_roll = numpy.atan2(accel_x, accel_z) * 180 / numpy.pi 
+        self.gyro_roll = gyro_y * delta_time    
