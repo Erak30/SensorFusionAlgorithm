@@ -4,4 +4,4 @@ This project implements real-time orientation tracking of an MPU6050 IMU. It con
 
 ## Structure
 
-This project contains two folders, one to process and visualize the data using Python, and the other to send the data from the microcontroller via serial data to be interpretted by the Python code.
+This project contains two folders, one to process and visualize the data using Python, and the other to send the imu data from the microcontroller via serial data to be interpretted by the Python code.
